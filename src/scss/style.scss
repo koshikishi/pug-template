@@ -1,0 +1,14 @@
+// Vendor
+@use "vendor/normalize";
+
+// Common
+@use "common/variables";
+@use "common/fonts";
+@use "common/keyframes";
+@use "common/global";
+@use "common/layout";
+@use "common/utils";
+
+// Blocks
+@use "blocks/header";
+@use "blocks/footer";
