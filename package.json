@@ -11,7 +11,12 @@
   "type": "module",
   "repository": "github:koshikishi/pug-template",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "gulp start",
+    "build": "gulp build",
+    "preview": "npm run build && browser-sync build --cors --no-notify --no-ui",
+    "optimize": "run-p optimize:**",
+    "optimize:raster": "gulp raster",
+    "optimize:vector": "gulp vector"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.18",
