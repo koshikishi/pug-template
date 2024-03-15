@@ -13,5 +13,37 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "private": true
+  "devDependencies": {
+    "autoprefixer": "^10.4.18",
+    "browser-sync": "^3.0.2",
+    "browserslist-to-esbuild": "^2.1.1",
+    "cssnano": "^6.1.0",
+    "gulp": "^4.0.2",
+    "gulp-esbuild": "^0.12.0",
+    "gulp-html-minifier-terser": "^7.1.0",
+    "gulp-plumber": "^1.2.1",
+    "gulp-postcss": "^10.0.0",
+    "gulp-pug": "^5.0.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-sass": "^5.1.0",
+    "gulp-sharp-responsive": "^0.4.1",
+    "gulp-svg-sprite": "^2.0.3",
+    "gulp-svgmin": "^4.1.0",
+    "npm-run-all2": "^6.1.2",
+    "postcss": "^8.4.35",
+    "postcss-normalize": "^10.0.1",
+    "postcss-preset-env": "^9.5.1",
+    "sass": "^1.72.0"
+  },
+  "engines": {
+    "node": "^18 || >=20"
+  },
+  "private": true,
+  "browserslist": [
+    "last 2 versions",
+    "not dead",
+    "not op_mini all",
+    "not and_uc > 0",
+    "not < 0.2%"
+  ]
 }
