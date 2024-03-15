@@ -1,0 +1,17 @@
+{
+  "name": "pug-template",
+  "version": "0.1.0",
+  "description": "The basic Pug template to start development",
+  "homepage": "https://github.com/koshikishi/pug-template#readme",
+  "bugs": {
+    "url": "https://github.com/koshikishi/pug-template/issues"
+  },
+  "license": "MIT",
+  "author": "Anton Northern",
+  "type": "module",
+  "repository": "github:koshikishi/pug-template",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "private": true
+}
