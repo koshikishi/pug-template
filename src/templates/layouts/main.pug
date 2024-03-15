@@ -1,0 +1,33 @@
+include ../components/components
+
+block variables
+
+doctype html
+html(lang="en")
+  head
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width,initial-scale=1")
+    meta(name="description" content="The basic Pug template to start development")
+    meta(name="theme-color" content="#ffffff")
+    title= title
+    //- Preloading fonts
+    //- link(rel="preload" href="fonts/roboto-regular.woff2" as="font" crossorigin)
+    link(rel="stylesheet" href="css/style.min.css")
+    //- Adding favicons
+    //-
+      link(rel="icon" href="favicon.ico")
+      link(rel="icon" href="favicons/favicon.svg" type="image/svg+xml")
+      link(rel="apple-touch-icon" href="favicons/apple-touch-icon.png")
+      link(rel="manifest" href="manifest.webmanifest")
+    script(src="js/main.min.js" defer)
+
+  body(class=bodyClassList)
+    if hasHeader
+      +header(headerClassList)
+
+    block main
+
+    if hasFooter
+      +footer(footerClassList)
+
+    block scripts

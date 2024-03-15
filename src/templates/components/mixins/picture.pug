@@ -1,0 +1,92 @@
+//- @pugdoc
+  name: picture
+  description: Outputs a <picture> element for the specified image.
+  arguments:
+    - {string} name - the image name without the extension, pixel density descriptor and viewport suffix (e.g. 'my-image' for 'my-image-mobile@1x.jpg').
+    - {string} extension - the image file extension.
+    - {(number|number[])} width - the width of the image, or an array of values for different viewports (e.g. [80, 120, 250], where 80 is for mobile, 120 for tablet, and 250 for desktop).
+    - {(number|number[])} height - the height of the image, or an array of values for different viewports.
+    - {string} alt - the alternative text description of the image.
+    - {Object} [options] - additional options (see below).
+    - {string} [options.path=''] - the path to the file relative to the image directory (e.g. 'photos' for '/src/img/photos/my-image.jpg').
+    - {string[]} [options.viewports] - an array of viewports selected for the image that correspond to the keys in viewportToWidth. The default is all available viewports.
+    - {boolean} [options.isResponsive=true] - true for a responsive image that changes based on the viewport width, otherwise false. If set to false, options.viewports is ignored.
+
+mixin picture(name, extension, width, height, alt, options={})
+  -
+    const MAX_DENSITY = 2;
+    const MODERN_FORMATS = ['webp']; // Add 'avif' to include it in the output
+    // Change the values to set your own breakpoints
+    const viewportToWidth = {
+      desktop: 1440,
+      tablet: 768,
+      mobile: 320,
+    };
+    const formatToType = {
+      jpg: 'image/jpeg',
+      jpeg: 'image/jpeg',
+      png: 'image/png',
+      webp: 'image/webp',
+      avif: 'image/avif',
+      svg: 'image/svg+xml',
+    };
+
+    const {
+      path = '',
+      viewports = ['mobile', 'tablet', 'desktop'],
+      isResponsive = true,
+    } = options;
+
+    const isSvg = extension === 'svg';
+    const formats = isSvg ? [extension] : [extension, ...MODERN_FORMATS].reverse();
+    const selectedViewports = isResponsive ? Object.keys(viewportToWidth).filter((viewport) => viewports.includes(viewport)) : [''];
+
+    /**
+     * Generates a URL for the image.
+     * @param {string} format - the image format (e.g. 'jpg', 'webp', 'svg').
+     * @param {string} suffix - an addition at the end of the image name (e.g. to indicate the viewport the image is intended for).
+     * @param {number} [density=0] - the pixel density descriptor.
+     * @return {string} a URL for the image.
+     */
+    const getURL = (format, suffix, density = 0) => `img/${path}/${name}${suffix && `-${suffix}`}${density ? `@${density}x` : ''}.${format}`.replace(/\/{2,}/g, '/');
+
+    /**
+     * Generates a comma-separated list of strings indicating a set of possible images to use in a srcset attribute.
+     * @param {string} format - the image format (e.g. 'jpg', 'webp', 'svg').
+     * @param {string} suffix - an addition at the end of the image name (e.g. to indicate the viewport the image is intended for).
+     * @return {string} a comma-separated list of strings indicating a set of possible images.
+     */
+    const getSrcset = (format, suffix) => {
+      if (isSvg) {
+        return getURL(format, suffix);
+      }
+
+      const srcset = [];
+
+      for (let density = 1; density <= MAX_DENSITY; density++) {
+        srcset.push(`${getURL(format, suffix, density)} ${density}x`);
+      }
+
+      return srcset.join(', ');
+    };
+
+  picture
+    each viewport, i in selectedViewports
+      -
+        const isLastViewport = selectedViewports.length === i + 1;
+        const reverseIndex = selectedViewports.length - i - 1;
+      each format, j in formats
+        unless isLastViewport && formats.length === j + 1
+          source(
+            type=formatToType[format] || `image/${format}`
+            media=!isLastViewport && `(min-width: ${viewportToWidth[viewport]}px)`
+            srcset=getSrcset(format, viewport)
+            width=Array.isArray(width) && width[reverseIndex]
+            height=Array.isArray(height) && height[reverseIndex])
+        else
+          img(
+            src=getURL(format, viewport, +!isSvg)
+            srcset=!isSvg && getSrcset(format, viewport).replace(/^.*?,\s/, '')
+            width=Array.isArray(width) ? width[reverseIndex] : width
+            height=Array.isArray(height) ? height[reverseIndex] : height
+            alt=alt)&attributes(attributes)

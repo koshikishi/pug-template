@@ -1,0 +1,16 @@
+extends ../layouts/main
+
+append variables
+  -
+    const title = 'Pug Template';
+    const currentPage = 'index';
+    const bodyClassList = [];
+    const hasHeader = true;
+    const headerClassList = [];
+    const hasFooter = true;
+    const footerClassList = [];
+
+block main
+  main
+    div.container
+      p= main.content
