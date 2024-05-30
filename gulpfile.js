@@ -234,6 +234,7 @@ const createStack = () => src(`${Path.Source.ICONS}/**/*.svg`)
  * Copies static files.
  */
 const copyStatic = () => src(PATHS_TO_STATIC, {
+  encoding: false,
   base: Path.Source.ROOT,
 })
   .pipe(dest(Path.Dist.ROOT));
