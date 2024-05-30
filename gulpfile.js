@@ -1,6 +1,6 @@
 import {readdirSync, readFileSync, rmSync} from 'node:fs';
 import {join} from 'node:path';
-import gulp from 'gulp';
+import {src, dest, watch, series, parallel} from 'gulp';
 import plumber from 'gulp-plumber';
 import pug from 'gulp-pug';
 import htmlmin from 'gulp-html-minifier-terser';
@@ -8,9 +8,7 @@ import * as dartSass from 'sass';
 import gulpSass from 'gulp-sass';
 import postcss from 'gulp-postcss';
 import postcssNormalize from 'postcss-normalize';
-import postcssPresetEnv from 'postcss-preset-env';
-import autoprefixer from 'autoprefixer';
-import cssnano from 'cssnano';
+import postcssLightningcss from 'postcss-lightningcss';
 import rename from 'gulp-rename';
 import {createGulpEsbuild} from 'gulp-esbuild';
 import browserslistToEsbuild from 'browserslist-to-esbuild';
@@ -57,7 +55,6 @@ const PATHS_TO_STATIC = [
   `!${Path.Source.ROOT}/**/.gitkeep`,
 ];
 
-const {src, dest, watch, series, parallel} = gulp;
 const sass = gulpSass(dartSass);
 const server = create();
 
@@ -97,9 +94,11 @@ const processStyles = () => src(`${Path.Source.STYLES}/style.scss`, {
   .pipe(sass().on('error', sass.logError))
   .pipe(postcss([
     postcssNormalize(),
-    postcssPresetEnv(),
-    autoprefixer(),
-    cssnano(),
+    postcssLightningcss({
+      lightningcssOptions: {
+        minify: isProduction,
+      },
+    }),
   ]))
   .pipe(rename({
     suffix: '.min',
