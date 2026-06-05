@@ -6,7 +6,9 @@
 
 The basic Pug template to start development.
 
-- Requires Node.js 18 (or later).
+## Prerequisites
+
+- Requires Node.js >= 24.
 - Designed for the latest versions of Chrome, Edge, Safari, Firefox, Opera.
 
 ## Installation
@@ -71,6 +73,7 @@ A detailed description of each directory can be found in the corresponding secti
 - `npm run lint` - runs all linter checks
   - `npm run lint:spaces` - runs the editorconfig check
   - `npm run lint:markup` - validates HTML markup using the W3C validator
+  - `npm run lint:bem` - validates markup using BEM methodology
   - `npm run lint:templates` - validates templates using Pug linter
   - `npm run lint:styles` - validates styles using Stylelint
   - `npm run lint:scripts` - validates scripts using ESLint
